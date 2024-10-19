@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Material Sharing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Study Material Sharing</h1>
+        <nav>
+            <button onclick="toggleSection('home')">Available Subjects</button>
+            <button onclick="toggleSection('subjects')">Study Materials</button>
+            <button onclick="toggleSection('upload')">Upload Material</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h2>Available Subjects</h2>
+            <div class="subject-list">
+                <div class="subject-card" onclick="toggleDocuments('programming')">
+                    <h3>Programming</h3>
+                </div>
+                <div class="subject-card" onclick="toggleDocuments('data-science')">
+                    <h3>Data Science</h3>
+                </div>
+                <div class="subject-card" onclick="toggleDocuments('networking')">
+                    <h3>Networking</h3>
+                </div>
+                <div class="subject-card" onclick="toggleDocuments('web-development')">
+                    <h3>Web Development</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="subjects" class="hidden">
+            <h2>Study Materials</h2>
+            <label for="filter">Filter by Type:</label>
+            <select id="filter" onchange="filterDocuments()">
+                <option value="all">All</option>
+                <option value="lecture-notes">Lecture Notes</option>
+                <option value="assignments">Assignments</option>
+                <option value="reference-materials">Reference Materials</option>
+            </select>
+
+            <div class="document-list">
+                <div class="document-item programming" data-type="lecture-notes" style="display: none;">
+                    <h3>Lecture Notes: Introduction to Programming</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+                <div class="document-item programming" data-type="assignments" style="display: none;">
+                    <h3>Assignment: Data Structures</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+                <div class="document-item programming" data-type="reference-materials" style="display: none;">
+                    <h3>Reference Material: Algorithms Overview</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+
+                <div class="document-item data-science" data-type="lecture-notes" style="display: none;">
+                    <h3>Lecture Notes: Data Analysis Basics</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+                <div class="document-item data-science" data-type="assignments" style="display: none;">
+                    <h3>Assignment: Data Visualization Project</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+                <div class="document-item data-science" data-type="reference-materials" style="display: none;">
+                    <h3>Reference Material: Introduction to Machine Learning</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+
+                <div class="document-item networking" data-type="lecture-notes" style="display: none;">
+                    <h3>Lecture Notes: Fundamentals of Networking</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+                <div class="document-item networking" data-type="assignments" style="display: none;">
+                    <h3>Assignment: Network Configuration Task</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+                <div class="document-item networking" data-type="reference-materials" style="display: none;">
+                    <h3>Reference Material: Network Security Principles</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+
+                <div class="document-item web-development" data-type="lecture-notes" style="display: none;">
+                    <h3>Lecture Notes: Web Development Basics</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+                <div class="document-item web-development" data-type="assignments" style="display: none;">
+                    <h3>Assignment: Create a Personal Website</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+                <div class="document-item web-development" data-type="reference-materials" style="display: none;">
+                    <h3>Reference Material: Responsive Design Principles</h3>
+                    <a href="#" class="button" download>Download</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="upload" class="hidden">
+            <h2>Upload Material</h2>
+            <form onsubmit="return showSuccess()">
+                <label for="subject">Select Subject:</label>
+                <select id="subject" required>
+                    <option value="">-- Select Subject --</option>
+                    <option value="programming">Programming</option>
+                    <option value="data-science">Data Science</option>
+                    <option value="networking">Networking</option>
+                    <option value="web-development">Web Development</option>
+                </select>
+
+                <label for="document-name">Document Name:</label>
+                <input type="text" id="document-name" required>
+
+                <label for="document-type">Document Type:</label>
+                <select id="document-type" required>
+                    <option value="">-- Select Document Type --</option>
+                    <option value="lecture-notes">Lecture Notes</option>
+                    <option value="assignments">Assignments</option>
+                    <option value="reference-materials">Reference Materials</option>
+                </select>
+
+                <label for="file">Upload File:</label>
+                <input type="file" id="file" required>
+
+                <button type="submit" class="button">Upload</button>
+            </form>
+
+            <div id="success-message" class="hidden">Your material has been uploaded successfully!</div>
+            <div id="error-message" class="hidden">An error occurred. Please try again!</div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024  Study Material Sharing</p>
+    </footer>
+
+    <script>
+        function toggleSection(section) {
+            const sections = document.querySelectorAll('main > section');
+            sections.forEach(sec => {
+                sec.classList.add('hidden');
+            });
+            document.getElementById(section).classList.remove('hidden');
+        }
+
+        function toggleDocuments(subject) {
+            const items = document.querySelectorAll('.document-item');
+            items.forEach(item => {
+                item.style.display = (item.classList.contains(subject)) ? 'block' : 'none';
+            });
+            toggleSection('subjects');
+        }
+
+        function filterDocuments() {
+            const filter = document.getElementById('filter').value;
+            const items = document.querySelectorAll('.document-item');
+
+            items.forEach(item => {
+                if ((filter === 'all' || item.dataset.type === filter) && item.style.display === 'block') {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function showSuccess() {
+            const message = document.getElementById('success-message');
+            const errorMessage = document.getElementById('error-message');
+            message.classList.remove('hidden');
+            errorMessage.classList.add('hidden');
+            return false; // Prevent form from reloading the page
+        }
+    </script>
+</body>
+</html>
